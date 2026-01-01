@@ -33,9 +33,7 @@ convertBtn.addEventListener('click', async () => {
         formData.append('svg', uploadedFile);
         formData.append('animation', animationType);
 
-        // УВАГА: Цей API endpoint буде після деплою на Vercel
-        // Поки що показуємо демо-версію
-        const response = await fetch('/api/convert', {
+        const response = await fetch('https://svg-to-tgs-converter.vercel.app/api/convert', {
             method: 'POST',
             body: formData
         });
