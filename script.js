@@ -70,3 +70,34 @@ downloadBtn.addEventListener('click', () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 });
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+// Drag & Drop події
+dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+});
+
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('dragover');
+});
+
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    handleFiles(files);
+});
+
+dropZone.addEventListener('click', () => fileInput.click());
+
+function handleFiles(files) {
+    const svgFile = Array.from(files).find(f => f.name.endsWith('.svg'));
+    if (svgFile) {
+        fileInput.files = files;
+        uploadedFile = svgFile;
+        convertBtn.disabled = false;
+        convertBtn.textContent = `Конвертувати ${svgFile.name}`;
+    }
+}
