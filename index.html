@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG to TGS Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 SVG to TGS Converter</h1>
+        <p>Конвертуйте векторні SVG у анімовані стікери Telegram (TGS)</p>
+        
+        <div class="upload-area">
+            <input type="file" id="fileInput" accept=".svg" />
+            <label for="fileInput">
+                📁 Виберіть SVG файл
+            </label>
+        </div>
+
+        <div class="animation-options">
+            <h3>Опції анімації</h3>
+            <label>
+                <input type="radio" name="animation" value="fade" checked> Fade In/Out
+            </label>
+            <label>
+                <input type="radio" name="animation" value="rotate"> Rotate
+            </label>
+            <label>
+                <input type="radio" name="animation" value="scale"> Scale
+            </label>
+        </div>
+
+        <button id="convertBtn" disabled>Конвертувати в TGS</button>
+
+        <div id="result" style="display: none;">
+            <h3>✅ Готово!</h3>
+            <button id="downloadBtn">Завантажити TGS</button>
+        </div>
+
+        <div class="info">
+            <h4>Вимоги Telegram:</h4>
+            <ul>
+                <li>Тільки векторні SVG (не растр)</li>
+                <li>Розмір: 512×512 px</li>
+                <li>Тривалість: до 3 секунд</li>
+                <li>Розмір файлу: до 64 KB</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
