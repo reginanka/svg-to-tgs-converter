@@ -10,43 +10,34 @@
     <div class="container">
         <h1>🎨 SVG to TGS Converter</h1>
         <p>Конвертуйте векторні SVG у анімовані стікери Telegram</p>
-        
-        <!-- Прихований input ПОЗА dropZone -->
+
+        <!-- Прихований input -->
         <input type="file" id="fileInput" accept=".svg,application/xml,image/svg+xml" style="display: none;" />
-        
+
         <!-- Drag & Drop зона -->
         <div id="dropZone" class="drop-zone">
-            <div class="drop-text">
+            <div id="dropText" class="drop-text">
                 <p>📁 Перетягніть SVG сюди або натисніть</p>
                 <p class="small">📱 Android: Дозвольте Chrome доступ до файлів</p>
             </div>
+            <!-- Контейнер для превью SVG -->
+            <div id="svgPreview" style="display: none;"></div>
         </div>
 
-        <div class="animation-options">
-            <h3>Тип анімації</h3>
-            <label><input type="radio" name="animation" value="fade" checked> Fade In/Out</label>
-            <label><input type="radio" name="animation" value="rotate"> Обертання</label>
-            <label><input type="radio" name="animation" value="scale"> Масштабування</label>
-        </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+        <!-- Повідомлення про валідацію (прихована спочатку) -->
+        <div id="validationMessage" style="display: none;"></div>
 
-        <button id="convertBtn" disabled>🔄 Конвертувати в TGS</button>
-
-        <div id="result" style="display: none;">
-            <h3>✅ Готово!</h3>
-            <button id="downloadBtn">📥 Завантажити TGS</button>
+        <!-- Опції анімації (приховані спочатку) -->
+        <div id="animationSection" class="animation-options" style="display: none;">
+            <h3>Оберіть тип анімації</h3>
+            <label><input type="radio" name="animation" value="static" checked> 🖼️ Статична (нерухома)</label>
+            <label><input type="radio" name="animation" value="fade"> ✨ Fade In/Out</label>
+            <label><input type="radio" name="animation" value="rotate"> 🔄 Обертання</label>
+            <label><input type="radio" name="animation" value="scale"> 📏 Масштабування</label>
         </div>
 
-        <div class="info">
-            <h4>📋 Вимоги:</h4>
-            <ul>
-                <li>Тільки векторні SVG</li>
-                <li>Розмір до 512×512 px</li>
-                <li>TGS файл до 64 KB</li>
-            </ul>
+        <!-- Контейнер для Lottie preview (прихований спочатку) -->
+        <div id="lottiePreviewSection" style="display: none;">
+            <h3>Попередній перегляд анімації</h3>
+            <div id="lottiePreview" style="width: 256px; height: 256px; margin: 20px auto; background: #f0f0f0; border-radius: 8px;"></div>
         </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
