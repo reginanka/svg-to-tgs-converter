@@ -63,20 +63,27 @@ async function validateSVG(file) {
     };
 }
 
-// Показ SVG превью
+// Показ SVG превью - КОМПАКТНА ВЕРСІЯ
 function showSVGPreview(svgText) {
     dropText.style.display = 'none';
     svgPreview.innerHTML = svgText;
     svgPreview.style.display = 'flex';
     svgPreview.style.justifyContent = 'center';
     svgPreview.style.alignItems = 'center';
-    svgPreview.style.padding = '20px';
+    svgPreview.style.padding = '10px';
+    svgPreview.style.minHeight = 'auto';
 
     const svgEl = svgPreview.querySelector('svg');
     if (svgEl) {
-        svgEl.style.maxWidth = '200px';
-        svgEl.style.maxHeight = '200px';
+        svgEl.style.maxWidth = '100px';
+        svgEl.style.maxHeight = '100px';
+        svgEl.style.width = 'auto';
+        svgEl.style.height = 'auto';
     }
+
+    // Зменшити розмір drop-zone після завантаження
+    dropZone.style.minHeight = '120px';
+    dropZone.style.padding = '15px';
 }
 
 // Показ повідомлення валідації
