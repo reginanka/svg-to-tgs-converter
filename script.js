@@ -12,6 +12,7 @@ const convertTgsBtn = document.getElementById('convertTgsBtn');
 let uploadedFile = null;
 let lottieAnimation = null;
 let currentLottieData = null;
+let uploadedSvgText = null;
 
 // Валідація SVG файлу
 async function validateSVG(file) {
@@ -65,6 +66,7 @@ async function validateSVG(file) {
 
 // Показ SVG превью - КОМПАКТНА ВЕРСІЯ
 function showSVGPreview(svgText) {
+    uploadedSvgText = svgText;
     dropText.style.display = 'none';
     svgPreview.innerHTML = svgText;
     svgPreview.style.display = 'flex';
@@ -111,42 +113,76 @@ function showValidationMessage(validation) {
     }
 }
 
-// Генерація Lottie анімації (базова заглушка - потрібен backend)
-function generateLottiePreview() {
-    const animationType = document.querySelector('input[name="animation"]:checked').value;
-
-    // Базовий Lottie JSON для демо
-    currentLottieData = {
+// Створення простої демо-анімації на основі SVG
+function createSimpleLottieFromSVG(animationType) {
+    // Базовий Lottie з простою фігурою для демонстрації анімації
+    const baseAnimation = {
         "v": "5.7.4",
         "fr": 60,
         "ip": 0,
         "op": 180,
         "w": 512,
         "h": 512,
-        "nm": "SVG Animation",
+        "nm": "SVG Animation Demo",
         "ddd": 0,
         "assets": [],
         "layers": [{
             "ddd": 0,
             "ind": 1,
             "ty": 4,
-            "nm": "Shape",
+            "nm": "Shape Layer",
             "sr": 1,
             "ks": {
                 "o": generateOpacityAnimation(animationType),
                 "r": generateRotationAnimation(animationType),
-                "p": {"a": 0, "k": [256, 256]},
+                "p": {"a": 0, "k": [256, 256, 0]},
+                "a": {"a": 0, "k": [0, 0, 0]},
                 "s": generateScaleAnimation(animationType)
             },
             "ao": 0,
-            "shapes": [],
+            "shapes": [{
+                "ty": "gr",
+                "it": [{
+                    "ty": "rc",
+                    "d": 1,
+                    "s": {"a": 0, "k": [200, 200]},
+                    "p": {"a": 0, "k": [0, 0]},
+                    "r": {"a": 0, "k": 20}
+                }, {
+                    "ty": "fl",
+                    "c": {"a": 0, "k": [0.4, 0.4, 0.9, 1]},
+                    "o": {"a": 0, "k": 100}
+                }, {
+                    "ty": "tr",
+                    "p": {"a": 0, "k": [0, 0]},
+                    "a": {"a": 0, "k": [0, 0]},
+                    "s": {"a": 0, "k": [100, 100]},
+                    "r": {"a": 0, "k": 0},
+                    "o": {"a": 0, "k": 100}
+                }],
+                "nm": "Rectangle",
+                "cix": 2,
+                "bm": 0
+            }],
             "ip": 0,
             "op": 180,
-            "st": 0
+            "st": 0,
+            "bm": 0
         }],
         "markers": []
     };
 
+    return baseAnimation;
+}
+
+// Генерація Lottie анімації
+function generateLottiePreview() {
+    const animationType = document.querySelector('input[name="animation"]:checked').value;
+
+    // Створити демо-анімацію
+    currentLottieData = createSimpleLottieFromSVG(animationType);
+
+    console.log('Generated Lottie data:', currentLottieData);
     showLottiePreview();
 }
 
@@ -156,9 +192,9 @@ function generateOpacityAnimation(type) {
         return {
             "a": 1,
             "k": [
-                {"t": 0, "s": [0]},
-                {"t": 30, "s": [100]},
-                {"t": 150, "s": [100]},
+                {"t": 0, "s": [0], "h": 0},
+                {"t": 30, "s": [100], "h": 0},
+                {"t": 150, "s": [100], "h": 0},
                 {"t": 180, "s": [0]}
             ]
         };
@@ -171,7 +207,7 @@ function generateRotationAnimation(type) {
         return {
             "a": 1,
             "k": [
-                {"t": 0, "s": [0]},
+                {"t": 0, "s": [0], "h": 0},
                 {"t": 180, "s": [360]}
             ]
         };
@@ -184,13 +220,13 @@ function generateScaleAnimation(type) {
         return {
             "a": 1,
             "k": [
-                {"t": 0, "s": [80, 80]},
-                {"t": 90, "s": [120, 120]},
-                {"t": 180, "s": [80, 80]}
+                {"t": 0, "s": [80, 80, 100], "h": 0},
+                {"t": 90, "s": [120, 120, 100], "h": 0},
+                {"t": 180, "s": [80, 80, 100]}
             ]
         };
     }
-    return {"a": 0, "k": [100, 100]};
+    return {"a": 0, "k": [100, 100, 100]};
 }
 
 // Показ Lottie preview
@@ -199,18 +235,28 @@ function showLottiePreview() {
     downloadSection.style.display = 'block';
 
     // Очистити попередній preview
+    const previewContainer = document.getElementById('lottiePreview');
+    previewContainer.innerHTML = '';
+
     if (lottieAnimation) {
         lottieAnimation.destroy();
     }
 
-    // Створити новий preview
-    lottieAnimation = lottie.loadAnimation({
-        container: document.getElementById('lottiePreview'),
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        animationData: currentLottieData
-    });
+    try {
+        // Створити новий preview
+        lottieAnimation = lottie.loadAnimation({
+            container: previewContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: currentLottieData
+        });
+
+        console.log('Lottie animation loaded successfully');
+    } catch (error) {
+        console.error('Error loading Lottie animation:', error);
+        previewContainer.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;">⚠️ Помилка завантаження превью</div>';
+    }
 }
 
 // Обробка файлів
@@ -320,7 +366,7 @@ convertTgsBtn.addEventListener('click', async () => {
         convertTgsBtn.disabled = false;
         convertTgsBtn.innerHTML = '🔄 Конвертувати і завантажити TGS';
     } catch (error) {
-        alert('⚠️ Backend ще не підключений. Поки працює тільки завантаження JSON!');
+        alert('⚠️ Backend ще не підключений. Поки працює тільки завантаження JSON!\n\nДля повної конвертації SVG→TGS потрібен Python backend.');
         console.error(error);
         convertTgsBtn.disabled = false;
         convertTgsBtn.innerHTML = '🔄 Конвертувати і завантажити TGS';
