@@ -41,3 +41,24 @@
             <h3>Попередній перегляд анімації</h3>
             <div id="lottiePreview" style="width: 256px; height: 256px; margin: 20px auto; background: #f0f0f0; border-radius: 8px;"></div>
         </div>
+
+        <!-- Кнопки завантаження (приховані спочатку) -->
+        <div id="downloadSection" style="display: none;">
+            <button id="downloadJsonBtn" class="download-btn">📥 Завантажити Lottie (JSON)</button>
+            <button id="convertTgsBtn" class="download-btn primary">🔄 Конвертувати і завантажити TGS</button>
+        </div>
+
+        <div class="info">
+            <h4>📋 Вимоги:</h4>
+            <ul>
+                <li>Тільки векторні SVG</li>
+                <li>Розмір до 512×512 px</li>
+                <li>TGS файл до 64 KB</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
