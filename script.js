@@ -8,6 +8,7 @@ const lottiePreviewSection = document.getElementById('lottiePreviewSection');
 const downloadSection = document.getElementById('downloadSection');
 const downloadJsonBtn = document.getElementById('downloadJsonBtn');
 const convertTgsBtn = document.getElementById('convertTgsBtn');
+const infoSection = document.querySelector('.info');
 
 let uploadedFile = null;
 let lottieAnimation = null;
@@ -72,20 +73,18 @@ function showSVGPreview(svgText) {
     svgPreview.style.display = 'flex';
     svgPreview.style.justifyContent = 'center';
     svgPreview.style.alignItems = 'center';
-    svgPreview.style.padding = '10px';
-    svgPreview.style.minHeight = 'auto';
 
     const svgEl = svgPreview.querySelector('svg');
     if (svgEl) {
-        svgEl.style.maxWidth = '100px';
-        svgEl.style.maxHeight = '100px';
+        svgEl.style.maxWidth = '60px';
+        svgEl.style.maxHeight = '60px';
         svgEl.style.width = 'auto';
         svgEl.style.height = 'auto';
     }
 
     // Зменшити розмір drop-zone після завантаження
-    dropZone.style.minHeight = '120px';
-    dropZone.style.padding = '15px';
+    dropZone.style.minHeight = '80px';
+    dropZone.style.padding = '10px';
 }
 
 // Показ повідомлення валідації
@@ -94,12 +93,18 @@ function showValidationMessage(validation) {
 
     if (validation.valid || validation.hasWarnings) {
         validationMessage.className = 'validation-message success';
+        // Скорочене повідомлення без зайвого тексту
         validationMessage.innerHTML = `
             <p><strong>✅ Файл завантажено успішно!</strong></p>
             ${validation.errors.length > 0 ? '<p>' + validation.errors.join('<br>') + '</p>' : ''}
-            <p>Оберіть тип анімації нижче:</p>
         `;
         animationSection.style.display = 'block';
+
+        // Приховати блок вимог після успішного завантаження
+        if (infoSection) {
+            infoSection.classList.add('hidden');
+        }
+
         generateLottiePreview();
     } else {
         validationMessage.className = 'validation-message error';
@@ -110,6 +115,11 @@ function showValidationMessage(validation) {
         animationSection.style.display = 'none';
         lottiePreviewSection.style.display = 'none';
         downloadSection.style.display = 'none';
+
+        // Показати вимоги при помилці
+        if (infoSection) {
+            infoSection.classList.remove('hidden');
+        }
     }
 }
 
