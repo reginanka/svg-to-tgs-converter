@@ -18,13 +18,14 @@ class handler(BaseHTTPRequestHandler):
     
     def do_POST(self):
         try:
-            # CORS headers
-            self.send_header('Access-Control-Allow-Origin', '*')
-            
             # Парсинг multipart/form-data
-            content_type = self.headers['content-type']
+            content_type = self.headers.get('content-type', '')
             if not content_type:
-                self.send_error(400, "Missing content-type header")
+                self.send_response(400)
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(b'{"error": "Missing content-type header"}')
                 return
                 
             # Отримати boundary для парсингу форми
@@ -43,17 +44,21 @@ class handler(BaseHTTPRequestHandler):
             for part in parts:
                 if b'filename=' in part and b'.svg' in part:
                     # Знайшли SVG файл
-                    svg_start = part.find(b'') + 4
-                    svg_end = part.rfind(b'')
+                    svg_start = part.find(b'\r\n\r\n') + 4
+                    svg_end = part.rfind(b'\r\n')
                     svg_content = part[svg_start:svg_end]
                 elif b'name="animation"' in part:
                     # Знайшли тип анімації
-                    anim_start = part.find(b'') + 4
-                    anim_end = part.rfind(b'')
+                    anim_start = part.find(b'\r\n\r\n') + 4
+                    anim_end = part.rfind(b'\r\n')
                     animation_type = part[anim_start:anim_end].decode('utf-8')
             
             if not svg_content:
-                self.send_error(400, "No SVG file found")
+                self.send_response(400)
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(b'{"error": "No SVG file found"}')
                 return
             
             # Створення тимчасових файлів
@@ -114,8 +119,9 @@ class handler(BaseHTTPRequestHandler):
                 with open(tgs_path, 'rb') as f:
                     tgs_data = f.read()
                 
-                # Відправка відповіді
+                # Відправка відповіді з CORS
                 self.send_response(200)
+                self.send_header('Access-Control-Allow-Origin', '*')
                 self.send_header('Content-Type', 'application/gzip')
                 self.send_header('Content-Disposition', 'attachment; filename="sticker.tgs"')
                 self.send_header('Content-Length', str(len(tgs_data)))
@@ -130,6 +136,7 @@ class handler(BaseHTTPRequestHandler):
                         
         except Exception as e:
             self.send_response(500)
+            self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             error_response = {
