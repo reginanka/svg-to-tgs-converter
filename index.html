@@ -11,13 +11,15 @@
         <h1>🎨 SVG to TGS Converter</h1>
         <p>Конвертуйте векторні SVG у анімовані стікери Telegram</p>
         
+        <!-- Прихований input ПОЗА dropZone -->
+        <input type="file" id="fileInput" accept=".svg,application/xml,image/svg+xml" style="display: none;" />
+        
         <!-- Drag & Drop зона -->
         <div id="dropZone" class="drop-zone">
             <div class="drop-text">
                 <p>📁 Перетягніть SVG сюди або натисніть</p>
                 <p class="small">📱 Android: Дозвольте Chrome доступ до файлів</p>
             </div>
-            <input type="file" id="fileInput" accept=".svg,application/xml,image/svg+xml" />
         </div>
 
         <div class="animation-options">
@@ -31,7 +33,7 @@
 
         <div id="result" style="display: none;">
             <h3>✅ Готово!</h3>
-            <a id="downloadLink" download="sticker.tgs" style="display:none;">📥 Завантажити TGS</a>
+            <button id="downloadBtn">📥 Завантажити TGS</button>
         </div>
 
         <div class="info">
