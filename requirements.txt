@@ -1,2 +1,2 @@
-python-lottie
+lottie
 pillow
