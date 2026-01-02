@@ -39,12 +39,12 @@ p {
 .drop-zone {
     border: 3px dashed #667eea;
     border-radius: 12px;
-    padding: 60px 20px;
+    padding: 40px 20px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     background: #f8f9ff;
-    min-height: 200px;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -64,13 +64,13 @@ p {
 }
 
 .drop-text p {
-    font-size: 1.2em;
+    font-size: 1.1em;
     color: #667eea;
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .drop-text .small {
-    font-size: 0.9em;
+    font-size: 0.85em;
     color: #999;
 }
 
@@ -79,8 +79,8 @@ p {
 }
 
 #svgPreview svg {
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 150px;
+    max-height: 150px;
     filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
 }
 
@@ -251,6 +251,7 @@ p {
     }
 
     .drop-zone {
-        padding: 40px 15px;
+        padding: 30px 15px;
+        min-height: 120px;
     }
 }
