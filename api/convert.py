@@ -5,6 +5,8 @@ import os
 import gzip
 from io import BytesIO
 import cgi
+import sys
+import traceback
 
 class handler(BaseHTTPRequestHandler):
     
@@ -135,12 +137,17 @@ class handler(BaseHTTPRequestHandler):
                         os.unlink(path)
                         
         except Exception as e:
+            # ДЕТАЛЬНИЙ LOGGING
+            print(f"ERROR: {e}", file=sys.stderr)
+            traceback.print_exc(file=sys.stderr)
+            
             self.send_response(500)
             self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             error_response = {
                 'error': str(e),
+                'traceback': traceback.format_exc(),
                 'message': 'Conversion failed'
             }
             self.wfile.write(json.dumps(error_response).encode())
