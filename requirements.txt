@@ -1,3 +1,4 @@
+setuptools>=69.0.0
 lottie==0.7.0
 cairosvg==2.7.1
 pillow==10.4.0
